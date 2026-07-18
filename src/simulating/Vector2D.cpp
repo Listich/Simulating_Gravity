@@ -18,3 +18,15 @@ Vector2D Vector2D::operator-(const Vector2D& autre) const {
 double Vector2D::length() const {
     return sqrt(x*x + y*y);
 }
+
+Vector2D Vector2D::operator+(const Vector2D& autre) const {
+    return Vector2D(x + autre.x, y + autre.y);
+}
+
+Vector2D Vector2D::operator*(double scalar) const {
+    return Vector2D(x * scalar, y * scalar);
+}
+
+Vector2D Vector2D::operator/(double scalar) const {
+    return Vector2D(x / scalar, y / scalar);
+}

@@ -22,5 +22,13 @@ int main() {
     std::cout << "Vecteur entre A et B : (" << entre_A_et_B.getX() << ", " << entre_A_et_B.getY() << ")" << std::endl;
     std::cout << "Distance calculée (Pythagore) : " << distance << std::endl;
 
+    std::cout << "Test de normalisation" << std::endl;
+    Vector2D pointC(3.0, 4.0);
+    double lengthC = pointC.length();
+
+    Vector2D normalise = pointC / lengthC;
+    std::cout << "Vecteur normalise : (" << normalise.getX() << ", " << normalise.getY() << ")" << std::endl;
+
+
     return 0;
 }

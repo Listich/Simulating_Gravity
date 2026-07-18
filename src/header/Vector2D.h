@@ -8,6 +8,9 @@ public:
     double getY() const;
     Vector2D();
     Vector2D operator-(const Vector2D& autre) const;
+    Vector2D operator+(const Vector2D& autre) const;
+    Vector2D operator*(double scalar) const;
+    Vector2D operator/(double scalar) const;
     double length() const;
 private:
     double x;
