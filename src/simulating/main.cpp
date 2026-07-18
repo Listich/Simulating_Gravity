@@ -34,10 +34,17 @@ int main() {
     Body body1 = { 5.0, Vector2D(0.0, 0.0), Vector2D(0,0), Vector2D(0,0) };
     Body body2 = { 5.0, Vector2D(3.0, 4.0), Vector2D(0,0), Vector2D(0,0) };
 
-    double dt = 0.1;
+    double dt = 0.01;
+    int nombre_iterations = 1000;
 
-    Vector2D force = Physics::computeGravitationalForce(body1, body2);
-    Physics::integrate(body1, force, dt);
-    std::cout << "New position of body1: (" << body1.position.getX() << ", " << body1.position.getY() << ")" << std::endl;
+    for(int i = 0; i < nombre_iterations; ++i) {
+        if (i % 100 == 0) {
+            std::cout << "Iteration: " << i 
+            << " | Position: (" << body1.position.getX() 
+            << ", " << body1.position.getY() << ")" << std::endl;
+        }
+        Vector2D force = Physics::computeGravitationalForce(body1, body2);
+        Physics::integrate(body1, force, dt);
+    }
     return 0;
 }
