@@ -1,6 +1,8 @@
 CXX = g++
 
-CXXFLAGS = -Wall -Wextra -std=c++17 -O2 -Isrc/header
+CXXFLAGS = -Wall -Wextra -std=c++17 -O2 -Isrc/header -I/opt/homebrew/include
+
+LDFLAGS = -L/opt/homebrew/lib -lraylib -framework Cocoa -framework IOKit -framework CoreVideo -framework OpenGL
 
 TARGET = Gravity
 
@@ -11,7 +13,7 @@ OBJS = $(SRCS:.cpp=.o)
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS) $(LDFLAGS)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
