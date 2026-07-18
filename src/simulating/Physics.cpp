@@ -9,3 +9,8 @@ Vector2D Physics::computeGravitationalForce(const Body& a, const Body& b) {
     return normalizedDirection * intensity;
 }
 
+void Physics::integrate(Body& body, const Vector2D& totalForce, double deltaTime) {
+    Vector2D acceleration = totalForce / body.mass;
+    body.velocity = body.velocity + acceleration * deltaTime;
+    body.position = body.position + body.velocity * deltaTime;
+}

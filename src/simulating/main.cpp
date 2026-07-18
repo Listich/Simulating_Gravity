@@ -34,8 +34,10 @@ int main() {
     Body body1 = { 5.0, Vector2D(0.0, 0.0), Vector2D(0,0), Vector2D(0,0) };
     Body body2 = { 5.0, Vector2D(3.0, 4.0), Vector2D(0,0), Vector2D(0,0) };
 
-    auto force = Physics::computeGravitationalForce(body1, body2);
-    std::cout << "Force gravitationnelle : (" << force.getX() << ", " << force.getY() << ")" << std::endl;
+    double dt = 0.1;
 
+    Vector2D force = Physics::computeGravitationalForce(body1, body2);
+    Physics::integrate(body1, force, dt);
+    std::cout << "New position of body1: (" << body1.position.getX() << ", " << body1.position.getY() << ")" << std::endl;
     return 0;
 }
