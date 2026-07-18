@@ -1,5 +1,6 @@
 #include "Vector2D.h"
 #include "Body.h"
+#include "Physics.h"
 #include <iostream>
 
 
@@ -29,6 +30,12 @@ int main() {
     Vector2D normalise = pointC / lengthC;
     std::cout << "Vecteur normalise : (" << normalise.getX() << ", " << normalise.getY() << ")" << std::endl;
 
+
+    Body body1 = { 5.0, Vector2D(0.0, 0.0), Vector2D(0,0), Vector2D(0,0) };
+    Body body2 = { 5.0, Vector2D(3.0, 4.0), Vector2D(0,0), Vector2D(0,0) };
+
+    auto force = Physics::computeGravitationalForce(body1, body2);
+    std::cout << "Force gravitationnelle : (" << force.getX() << ", " << force.getY() << ")" << std::endl;
 
     return 0;
 }
