@@ -7,6 +7,8 @@ public:
     double getX() const;
     double getY() const;
     Vector2D();
+    Vector2D operator-(const Vector2D& autre) const;
+    double length() const;
 private:
     double x;
     double y;
