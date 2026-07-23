@@ -2,49 +2,43 @@
 #include "Body.h"
 #include "Physics.h"
 #include <iostream>
+#include <raylib.h>
+#include "Render.h"
 
 
 int main() {
-    Body b = { 5.0, Vector2D(1.0, 2.0), Vector2D(0.5, 0.5), Vector2D(0.1, 0.1) };
-    std::cout << "Body mass: " << b.mass << std::endl;
+    InitWindow(800, 600, "Simulation Gravitationnelle");
+    SetTargetFPS(60);
 
-    Vector2D v(3.0, 4.0);
-    std::cout << "Vector2D: (" << v.getX() << ", " << v.getY() << ")" << std::endl;
+    Body terre;
+    terre.mass = 5.972e24; // Masse de la Terre en kg
+    terre.position = Vector2D(0.0, 0.0); // Position initiale de la Terre
+    terre.velocity = Vector2D(0.0, 0.0); // Vitesse initiale de la Terre
 
-    std::cout << "Test de Pythagore" << std::endl;
+    double distanceTerreLune = 3.844e8; // Distance moyenne entre la Terre et la Lune en mètres
 
-    Vector2D pointA(0.0, 0.0);
-    Vector2D pointB(3.0, 4.0);
+    Body lune;
+    lune.mass = 7.348e22; // Masse de la Lune en kg
+    lune.position = Vector2D(distanceTerreLune, 0.0); // Position initiale de la Lune
+    lune.velocity = Vector2D(0.0, 1018.0); // Vitesse initiale de la Lune (environ 1 km/s)
 
-    Vector2D entre_A_et_B = pointB - pointA; 
+    while (!WindowShouldClose()) {
+        double facteurEchelle = 7.8125e-7;
+        double dt = 1296.0;
+        int nombre_sous_etapes = 100;
+        double dt_petit = dt / nombre_sous_etapes;
 
-    double distance = entre_A_et_B.length();
-
-    std::cout << "Vecteur entre A et B : (" << entre_A_et_B.getX() << ", " << entre_A_et_B.getY() << ")" << std::endl;
-    std::cout << "Distance calculée (Pythagore) : " << distance << std::endl;
-
-    std::cout << "Test de normalisation" << std::endl;
-    Vector2D pointC(3.0, 4.0);
-    double lengthC = pointC.length();
-
-    Vector2D normalise = pointC / lengthC;
-    std::cout << "Vecteur normalise : (" << normalise.getX() << ", " << normalise.getY() << ")" << std::endl;
-
-
-    Body body1 = { 5.0, Vector2D(0.0, 0.0), Vector2D(0,0), Vector2D(0,0) };
-    Body body2 = { 5.0, Vector2D(3.0, 4.0), Vector2D(0,0), Vector2D(0,0) };
-
-    double dt = 0.01;
-    int nombre_iterations = 1000;
-
-    for(int i = 0; i < nombre_iterations; ++i) {
-        if (i % 100 == 0) {
-            std::cout << "Iteration: " << i 
-            << " | Position: (" << body1.position.getX() 
-            << ", " << body1.position.getY() << ")" << std::endl;
+        for (int i = 0; i < nombre_sous_etapes ; ++i)  {
+            Vector2D force = Physics::computeGravitationalForce(lune, terre);
+            Physics::integrate(lune, force , dt_petit);
         }
-        Vector2D force = Physics::computeGravitationalForce(body1, body2);
-        Physics::integrate(body1, force, dt);
+        Render::ScreenPosition posTerre = Render::worldToScreen(terre.position, facteurEchelle, 800, 600);
+        Render::ScreenPosition posLune = Render::worldToScreen(lune.position, facteurEchelle, 800, 600);
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawCircle(static_cast<int>(posTerre.x), static_cast<int>(posTerre.y), 15, BLUE);
+        DrawCircle(static_cast<int>(posLune.x), static_cast<int>(posLune.y), 5, GRAY);
+        EndDrawing();
     }
-    return 0;
+
 }
