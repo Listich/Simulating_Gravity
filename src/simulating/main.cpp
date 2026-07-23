@@ -9,6 +9,8 @@
 int main() {
     InitWindow(800, 600, "Simulation Gravitationnelle");
     SetTargetFPS(60);
+    Texture2D textureTerre = LoadTexture("terre.png");
+    Texture2D textureLune  = LoadTexture("lune.png");
 
     Body terre;
     terre.mass = 5.972e24; // Masse de la Terre en kg
@@ -35,10 +37,25 @@ int main() {
         Render::ScreenPosition posTerre = Render::worldToScreen(terre.position, facteurEchelle, 800, 600);
         Render::ScreenPosition posLune = Render::worldToScreen(lune.position, facteurEchelle, 800, 600);
         BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawCircle(static_cast<int>(posTerre.x), static_cast<int>(posTerre.y), 15, BLUE);
-        DrawCircle(static_cast<int>(posLune.x), static_cast<int>(posLune.y), 5, GRAY);
+        ClearBackground(BLACK);
+
+        
+        Rectangle srcTerre  = { 0.0f, 0.0f, (float)textureTerre.width, (float)textureTerre.height };
+        Rectangle destTerre = { (float)posTerre.x, (float)posTerre.y, 40.0f, 40.0f };
+        Vector2 originTerre = { 20.0f, 20.0f };
+        DrawTexturePro(textureTerre, srcTerre, destTerre, originTerre, 0.0f, WHITE);
+
+    
+        Rectangle srcLune  = { 0.0f, 0.0f, (float)textureLune.width, (float)textureLune.height };
+        Rectangle destLune = { (float)posLune.x, (float)posLune.y, 16.0f, 16.0f };
+        Vector2 originLune = { 8.0f, 8.0f };
+        DrawTexturePro(textureLune, srcLune, destLune, originLune, 0.0f, WHITE);
+
         EndDrawing();
     }
+    UnloadTexture(textureTerre);
+    UnloadTexture(textureLune);
+    CloseWindow();
+    return 0;
 
 }
